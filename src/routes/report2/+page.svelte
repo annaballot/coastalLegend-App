@@ -1,70 +1,75 @@
 <script lang="ts">
-    import Card from "$lib/ui/Card.svelte";
-    import PlacemarkList from "$lib/ui/PlacemarkList.svelte";
-    import { placemarkService } from "$lib/services/placemark-service";
-    import type { Placemark } from "$lib/types/placemark-types";
-    import { currentSession, subTitle } from "$lib/stores";
-  
-    import { onMount } from "svelte";
-    import { get } from "svelte/store";
-  
-    
-  
-  
-    subTitle.set("Report");
-    let placemarks: Placemark[] = [];
-    let category = ["Beach", "Surf Spot", "Mobile Sauna", "Coastal Path", "Diving Board", "Snorkelling"];
-    let selectedCategory = "";
-    let message = "Please select a category";
+  import Card from "$lib/ui/Card.svelte";
+  import PlacemarkList from "$lib/ui/PlacemarkList.svelte";
+  import { placemarkService } from "$lib/services/placemark-service";
+  import type { Placemark } from "$lib/types/placemark-types";
+  import { currentSession, latestPlacemark, subTitle } from "$lib/stores";
+  import LeafletMap from "$lib/ui/LeafletMap.svelte";
 
-    onMount(async () => {
-      placemarks = await placemarkService.filterCategory(get(currentSession),"Beach");
-    });
+  import { onMount } from "svelte";
+  import { get } from "svelte/store";
 
+  subTitle.set("Report");
+  let placemarks: Placemark[] = [];
+  let category = ["Beach", "Surf Spot", "Mobile Sauna", "Coastal Path", "Diving Board", "Snorkelling"];
+  let selectedCategory = "";
+  let message = "Please select a category";
+  let map: LeafletMap;
+  let activeLayer = "OpenTopoMap";
+  let height = 100;
 
-    async function filterPlacemark() {
+  onMount(async () => {
+    placemarks = await placemarkService.getPlacemarks(get(currentSession));
+  });
+
+  async function filterPlacemark() {
     // console.log(`Just added: ${name} with category ${category} and description ${description} `);
     // console.log(`latitude: ${latitude}, longitude: ${longitude}`);
 
     if (selectedCategory) {
-    placemarks = await placemarkService.filterCategory(get(currentSession),selectedCategory);
-    
+      placemarks = await placemarkService.filterCategory(get(currentSession), selectedCategory);
+      if (selectedCategory == "Beach") {
+        activeLayer = "OpenStreetMap_HOT";
+        height = 30;
+        console.log("activeLayer")
+        console.log(activeLayer)
+      }
     } else {
       message = "Please select amount, method and candidate";
     }
   }
+</script>
 
-
-
-  
-  </script>
-  
-
-  <form on:submit|preventDefault={filterPlacemark}>
-
-
-    <label class="label" for="category">Select Category:</label>
-    <div class="select">
-      <select bind:value={selectedCategory}>
-        {#each category as cat}
-          <option value={cat}>{cat}</option>
-        {/each}
-      </select>
+<form on:submit|preventDefault={filterPlacemark}>
+  <div class="columns">
+    <div class="column">
+      <label class="label is-fullwidth" for="category">Select a Category to Filter by:</label>
     </div>
-    <div class="field">
-      <div class="control">
-        <button class="button is-success">Filter Placemarks</button>
+    <div class="column">
+      <div class="select is-fullwidth">
+        <select bind:value={selectedCategory}>
+          {#each category as cat}
+            <option value={cat}>{cat}</option>
+          {/each}
+        </select>
       </div>
     </div>
+    <div class="column">
+      <div class="field">
+        <div class="control">
+          <button class="button is-success is-fullwidth">Filter Placemarks</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
+<br />
 
+<Card title="Placemarks">
+  <PlacemarkList {placemarks} />
+</Card>
+
+<Card title="View your Placemarks">
+  <LeafletMap height={height} activeLayer={activeLayer} bind:this={map} />
+</Card>
 </form>
-
-
-  <Card title="Placemarks">
-
-   <PlacemarkList {placemarks}/>
-  </Card>
-  
-  
-  
