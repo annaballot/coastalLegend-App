@@ -88,4 +88,22 @@ async stripPlacemarkPayload(placemark: Placemark) {
   }
 },
 
+
+
+
+async filterCategory(session: Session, category: string): Promise<PlacemarkPlus[]> {
+  try {
+    axios.defaults.headers.common["Authorization"] = session.token;
+    const response = await axios.get(`${this.baseUrl + "/api/placemarks/categories/" + category}`);
+    console.log(session.token);
+    console.log(response);
+    return response.data;
+  } catch (error) {
+    return [];
+  }
+} ,
+
+
+
+
 };

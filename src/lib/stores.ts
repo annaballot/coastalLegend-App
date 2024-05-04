@@ -6,3 +6,4 @@ export const currentSession = writable<Session>();
 export const subTitle = writable<string>();
 export const placemarkStore = writable<Placemark[]>([]);
 export const placemarkPlusStore = writable<PlacemarkPlus[]>([]);
+export const latestPlacemark = writable<Placemark>();

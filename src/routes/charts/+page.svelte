@@ -34,7 +34,7 @@
     ]
   };
 
-  subTitle.set("Donations Data");
+  subTitle.set("Charts and Graphs");
 
   onMount(async () => {
     const placemarkList = await placemarkService.getPlacemarks(get(currentSession));
