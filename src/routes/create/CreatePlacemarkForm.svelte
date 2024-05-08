@@ -19,7 +19,7 @@
 
   import Coordinates from "$lib/ui/Coordinates.svelte";
   import type { Placemark } from "$lib/types/placemark-types";
-  import { currentSession } from "$lib/stores";
+  import { currentSession, latestPlacemark } from "$lib/stores";
   import { placemarkService } from "$lib/services/placemark-service";
   import { get } from "svelte/store";
 
@@ -49,10 +49,13 @@
           rating: rating,
           img: img,
         };
-        const success = await placemarkService.createPlacemark(placemark, get(currentSession));
-        console.log(placemark);
-        if (!success) {
-          message = "Donation not completed - some error occurred";
+        const createdPlacemark = await placemarkService.createPlacemark(placemark, get(currentSession));
+        console.log("new placemark", placemark);
+        console.log("createdPlacemark", createdPlacemark)
+        latestPlacemark.set(placemark);
+        return placemark;
+        if (!createdPlacemark) {
+          message = "Creation not completed - some error occurred";
           console.log("not successful");
           return;
         }

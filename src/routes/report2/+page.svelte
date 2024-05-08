@@ -28,11 +28,19 @@
 
     if (selectedCategory) {
       placemarks = await placemarkService.filterCategory(get(currentSession), selectedCategory);
+      placemarks.forEach((placemark: Placemark) => {
+        const popup = `${placemark.name} Category: ${placemark.category} Rating: ${placemark.rating}`;
+        map.addMarker(placemark.latitude, placemark.longitude, popup);
+    });
+    const lastPlacemark = placemarks[placemarks.length - 1];
+    if (lastPlacemark) map.moveTo(lastPlacemark.latitude, lastPlacemark.longitude);
+
+    
       if (selectedCategory == "Beach") {
-        activeLayer = "OpenStreetMap_HOT";
+        // activeLayer = "OpenStreetMap_HOT";
         height = 30;
-        console.log("activeLayer")
-        console.log(activeLayer)
+        // console.log("activeLayer")
+        // console.log(activeLayer)
       }
     } else {
       message = "Please select amount, method and candidate";

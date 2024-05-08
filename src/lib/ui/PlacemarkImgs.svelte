@@ -15,36 +15,6 @@
     placemarks = value;
   });
 
-  // async function uploadImage(placemark: PlacemarkPlus) {
-  //   test_img_url = "www.test_img_url"
-  // 		console.log(test_img_url)
-
-  //     console.log("placemark before image change")
-  //     console.log(placemark)
-
-  //           const updatedPlacemark: PlacemarkPlus = {
-  //         name: placemark.name,
-  //         category: placemark.category,
-  //         description: placemark.description,
-  //         latitude: placemark.latitude,
-  //         longitude: placemark.longitude,
-  //         rating: placemark.rating,
-  //         img: test_img_url,
-  //         userid: placemark.userid,
-  //         _id: placemark._id,
-  //       };
-
-  //     console.log("placemark after image change")
-  //     console.log(updatedPlacemark)
-
-  //     const success = await placemarkService.updatePlacemark(updatedPlacemark, get(currentSession));
-  //       console.log(updatedPlacemark);
-  //       if (!success) {
-  //         message = "Donation not completed - some error occurred";
-  //         console.log("not successful");
-  //         return;
-  //       }
-  // }
 
   function handleImageUploaded(event: CustomEvent<{ imageUrl: string }>, placemarkId: string) {
     const imageUrl = event.detail.imageUrl;
@@ -52,6 +22,18 @@
 
     if (placemark) {
       placemark.img = imageUrl;
+      console.log("Updated placemark:", placemark);
+      placemarkService.updatePlacemark(placemark, get(currentSession));
+
+      placemarkStore.set(placemarks);
+    }
+  }
+
+  function handleImageDelete(placemarkId: string) {
+    const placemark = placemarks.find((p) => p._id === placemarkId);
+
+    if (placemark) {
+      placemark.img = '';
       console.log("Updated placemark:", placemark);
       placemarkService.updatePlacemark(placemark, get(currentSession));
 
@@ -73,5 +55,10 @@
     <br />
 
     <UploadWidget placemarkId={placemark._id} on:imageUploaded={(event) => handleImageUploaded(event, placemark._id)} />
+      <button title="Delete Image" class="card-footer-item" on:click={() => handleImageDelete(placemark._id)}>
+        <span class="icon has-text-danger">
+            <i class="fas fa-trash"></i>
+        </span>
+    </button>
   </Card>
 {/each}

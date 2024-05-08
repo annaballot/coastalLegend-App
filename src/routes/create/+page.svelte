@@ -31,21 +31,26 @@
     if (lastPlacemark) map.moveTo(lastPlacemark.latitude, lastPlacemark.longitude);
   });
 
-  latestPlacemark.subscribe(async (placemark) => {
-    if (placemark) {
-      placemarks.push(placemark);
+  latestPlacemark.subscribe(async (createPlacemark) => {
+    if (createPlacemark) {
+      placemarks.push(createPlacemark);
       placemarks = [...placemarks];
-      // placemarksByCandidate = generateByCandidate(placemarks, candidates);
-    }
-    // if (typeof placemark.candidate !== "string") {
-      // const popup = `${placemark.name} Category: ${placemark.category} Rating: ${placemark.rating}`;
-      const popup = `Category`;
-      map.addMarker(placemark.latitude, placemark.longitude, popup);
-      map.moveTo(placemark.latitude, placemark.longitude);
+      placemarks.forEach((placemark: Placemark) => {
+        console.log("Adding markers to map");
+        console.log(placemark.name, placemark.latitude, placemark.longitude);
+            const popup = `Test`;
+            map.addMarker(placemark.latitude, placemark.longitude, popup);
+        });
+        console.log("latestPlacemark")
+      const lastCreatedPlacemark = placemarks[placemarks.length - 1];
+      console.log("latest placemark: " + lastCreatedPlacemark.name);
+        if (lastCreatedPlacemark) {
+            map.moveTo(lastCreatedPlacemark.latitude, lastCreatedPlacemark.longitude);
+        }
     // }
+      }
   });
-  console.log("latestPlacemark")
-  console.log(latestPlacemark)
+  
 
   subTitle.set("Create a Placemark");
 
