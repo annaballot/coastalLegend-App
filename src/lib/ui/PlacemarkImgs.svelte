@@ -11,7 +11,7 @@
   let test_img_url;
   let message;
 
-  placemarkPlusStore.subscribe((value) => {
+  placemarkStore.subscribe((value) => {
     placemarks = value;
   });
 

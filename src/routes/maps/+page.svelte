@@ -17,7 +17,7 @@
     const placemarks = await placemarkService.getPlacemarks(get(currentSession));
     placemarks.forEach((placemark: Placemark) => {
         const popup = `${placemark.name} Category: ${placemark.category} Rating: ${placemark.rating}`;
-        map.addMarker(placemark.latitude, placemark.longitude, popup);
+        map.addMarker(placemark.latitude, placemark.longitude, popup, placemark.category);
     });
     const lastPlacemark = placemarks[placemarks.length - 1];
     if (lastPlacemark) map.moveTo(lastPlacemark.latitude, lastPlacemark.longitude);
@@ -26,6 +26,6 @@
   </script>
   
   <Card title="Placemark Locations">
-    <LeafletMap height={60} bind:this={map} />
+    <LeafletMap height={60} addCategories={true} bind:this={map} />
   </Card>
   

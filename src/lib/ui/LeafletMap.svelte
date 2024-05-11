@@ -1,7 +1,7 @@
 <script lang="ts">
   import "leaflet/dist/leaflet.css";
   import { onMount } from "svelte";
-  import type { Control, Map as LeafletMap } from "leaflet";
+  import type { Control, Map as LeafletMap, LayerGroup  } from "leaflet";
   import L from "leaflet";
 
   export let id = "home-map-id";
@@ -10,23 +10,43 @@
   export let zoom = 8;
   export let minZoom = 7;
   export let activeLayer = "Terrain";
-  export function addMarker(lat: number, lng: number, popupText: string) {
+  export let addCategories = false; 
+
+  export function addMarker(lat: number, lng: number, popupText: string, category: string) {
     const marker = L.marker([lat, lng]).addTo(imap);
     const popup = L.popup({ autoClose: false, closeOnClick: false });
     popup.setContent(popupText);
     marker.bindPopup(popup);
+    categoryLayers[category].addLayer(marker);
+    console.log("categoryLayers", categoryLayers);
+    console.log("category", category);
+    console.log("marker", marker);
+
+
+    
   }
   export function moveTo(lat: number, lng: number) {
     imap.flyTo({ lat: lat, lng: lng });
   }
 
+  const categories = ["Beach", "Surf Spot", "Mobile Sauna", "Coastal Path", "Diving Board", "Snorkelling"];
+
   let imap: LeafletMap;
   let control: Control.Layers;
   let overlays: Control.LayersObject = {};
   let baseLayers: any;
+  let categoryLayers: Record<string, LayerGroup> = {};
 
   onMount(async () => {
     const leaflet = await import("leaflet");
+
+    if (addCategories) {
+          categories.forEach(category => {
+              categoryLayers[category] = L.layerGroup();
+          });
+      }
+
+
     baseLayers = {
     Terrain: L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
       maxZoom: 17,
@@ -56,7 +76,20 @@
       minZoom: minZoom,
       layers: [defaultLayer]
     });
-    control = leaflet.control.layers(baseLayers, overlays).addTo(imap);
+
+    // Add category layers if addCategories is true
+    if (addCategories) {
+          Object.values(categoryLayers).forEach(layer => {
+              imap.addLayer(layer);
+          });
+      }
+
+
+     control = leaflet.control.layers({
+      'Terrain': baseLayers.Terrain, 
+      'OpenTopoMap': baseLayers.OpenTopoMap}, {
+        ...categoryLayers
+      }).addTo(imap);
   });
 </script>
 

@@ -37,6 +37,26 @@ export const placemarkService = {
     }
   },
 
+  async loginGithub(email: string): Promise<Session | null> {
+    try {
+      const response = await axios.post(`${this.baseUrl}/api/users/authenticate2`, { email });
+      if (response.data.success) {
+        axios.defaults.headers.common["Authorization"] = "Bearer " + response.data.token;
+        const session: Session = {
+          name: response.data.name,
+          token: response.data.token,
+          _id: response.data.id
+        };
+        console.log("session :", session.name)
+        return session;
+      }
+      return null;
+    } catch (error) {
+      console.log(error);
+      return null;
+    }
+  },
+
 
 async getPlacemarks(session: Session): Promise<PlacemarkPlus[]> {
   try {

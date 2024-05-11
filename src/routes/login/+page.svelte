@@ -1,5 +1,6 @@
 <script lang="ts">
     import LoginForm from "./LoginForm.svelte";
+    import LoginFormGithub from "./LoginFormGithub.svelte";
   
   </script>
   
@@ -10,6 +11,12 @@
           <h3 class="title has-text-black has-text-centered">Login to CoastalLegend</h3>
           <div class="box">
             <LoginForm />
+          </div>
+        </div>
+        <div class="column is-4 is-offset-4">
+          <h3 class="title has-text-black has-text-centered">Login to CoastalLegend via Github</h3>
+          <div class="box">
+            <LoginFormGithub />
           </div>
         </div>
       </div>

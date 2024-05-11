@@ -24,7 +24,7 @@
       // if (typeof placemark.candidate !== "string") {
         // const popup = `${placemark.name} Category: ${placemark.category} Rating: ${placemark.rating}`;
         const popup = `Category`;
-        map.addMarker(placemark.latitude, placemark.longitude, popup);
+        map.addMarker(placemark.latitude, placemark.longitude, popup, placemark.category);
       // }
     });
     const lastPlacemark = placemarks[placemarks.length - 1];
@@ -39,7 +39,7 @@
         console.log("Adding markers to map");
         console.log(placemark.name, placemark.latitude, placemark.longitude);
             const popup = `Test`;
-            map.addMarker(placemark.latitude, placemark.longitude, popup);
+            map.addMarker(placemark.latitude, placemark.longitude, popup, placemark.category);
         });
         console.log("latestPlacemark")
       const lastCreatedPlacemark = placemarks[placemarks.length - 1];
@@ -60,7 +60,7 @@
 <div class="columns">
   <div class="column">
     <Card title="View your Placemarks">
-      <LeafletMap height={45} bind:this={map} />
+      <LeafletMap height={45} addCategories={true} bind:this={map} />
     </Card>
   </div>
   <div class="column">
