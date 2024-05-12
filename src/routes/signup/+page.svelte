@@ -1,5 +1,7 @@
 <script lang="ts">
     import SignupForm from "./SignupForm.svelte";
+    import SignupGithubForm from "./SignupGithubForm.svelte";
+    
   </script>
   
   <section class="hero is-fullheight is-default is-bold">
@@ -7,9 +9,11 @@
       <div class="container">
         <div class="columns is-vcentered">
           <div class="column is-5">
-            <h1 class="title has-text-centered">Signup to Donation</h1>
+            <h1 class="title has-text-centered">Signup to CoastalLegend</h1>
             <div class="box">
               <SignupForm></SignupForm>
+              <SignupGithubForm></SignupGithubForm>
+              <br>
               <p class="has-text-centered">Already have an account? <a href="/login" data-cy="login-redirect">Login Here</a></p>
             </div>
           </div>

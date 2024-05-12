@@ -12,14 +12,33 @@ console.log("page.data.session",$page.data.session) ;
 
 onMount(async () => {
     let email = $page.data.session.user.email;
+
+    let userExists = await placemarkService.findUser(email);
+    console.log("response from finding user with email",userExists);
+    let responseEmail = userExists.email;
+    console.log("responseEmail", responseEmail)
+
+    if (responseEmail == email) {
+      // if the user already exists in the database, do nothing here and move on to the next step
+      console.log("User found", userExists)
+    } else {
+      //If the user does not already exist, we create them here
+      console.log("No user found")
+      let signupAPI = await placemarkService.signupGithub(email);
+      console.log("signupAPI", signupAPI)
+    }
+
+      //login to app and save session
       console.log(`attemting to log in email: ${email} `);
       let session = await placemarkService.loginGithub(email);
       console.log("session", session);
       if (session) {
+        //if the user exists then save the session details and goto the report page
         currentSession.set(session);
         localStorage.placemark = JSON.stringify(session);
         goto("/report");
       } else {
+        //if the user does not exist create an account for them and then sign them in
         email = "";
         console.log("Invalid Credentials");
       }

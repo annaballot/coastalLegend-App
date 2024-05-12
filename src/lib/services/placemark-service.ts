@@ -17,6 +17,31 @@ export const placemarkService = {
     }
   },
 
+  async findUser(email: string): Promise<User> {
+    try {
+      console.log("email in findUser",email);
+      const response = await axios.get(`${this.baseUrl + "/api/users2/" + email}`);
+      console.log("response in findUser",response);
+      // return response.status == 201;
+      // return "userfound";
+      return response.data;
+    } catch (error) {
+      return [];
+    }
+  },
+
+
+  async signupGithub(email: string): Promise<boolean> {
+    try {
+      const response = await axios.post(`${this.baseUrl}/api/users2`, { email });
+      return response.status == 201;
+    } catch (error) {
+      console.log(error);
+      return false;
+    }
+  },
+
+
   async login(email: string, password: string): Promise<Session | null> {
     try {
       const response = await axios.post(`${this.baseUrl}/api/users/authenticate`, { email, password });
