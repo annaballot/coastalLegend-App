@@ -8,13 +8,10 @@
   export let placemarks: PlacemarkPlus[] = [];
   import UploadWidget from "$lib/components/UploadWidget.svelte";
 
-  let test_img_url;
-  let message;
 
   placemarkStore.subscribe((value) => {
     placemarks = value;
   });
-
 
   function handleImageUploaded(event: CustomEvent<{ imageUrl: string }>, placemarkId: string) {
     const imageUrl = event.detail.imageUrl;
@@ -33,7 +30,7 @@
     const placemark = placemarks.find((p) => p._id === placemarkId);
 
     if (placemark) {
-      placemark.img = '';
+      placemark.img = "";
       console.log("Updated placemark:", placemark);
       placemarkService.updatePlacemark(placemark, get(currentSession));
 
@@ -55,16 +52,11 @@
     <br />
 
     <UploadWidget placemarkId={placemark._id} on:imageUploaded={(event) => handleImageUploaded(event, placemark._id)} />
-      <button title="Delete Image" class="button is-danger is-fullwidth" on:click={() => handleImageDelete(placemark._id)}>
-        Delete Image <br>
-        <span class="icon"> 
-            <i class="fas fa-trash"></i>
-        </span>
+    <button title="Delete Image" class="button is-danger is-fullwidth" on:click={() => handleImageDelete(placemark._id)}>
+      Delete Image <br />
+      <span class="icon">
+        <i class="fas fa-trash"></i>
+      </span>
     </button>
-
   </Card>
 {/each}
-
-
-
-

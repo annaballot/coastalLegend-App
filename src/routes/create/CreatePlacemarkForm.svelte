@@ -1,21 +1,4 @@
 <script lang="ts">
-  // const candidateList = [
-  //   {
-  //     firstName: "Lisa",
-  //     lastName: "Simpson",
-  //     office: "President"
-  //   },
-  //   {
-  //     firstName: "Maggie",
-  //     lastName: "Simpson",
-  //     office: "President"
-  //   },
-  //   {
-  //     firstName: "Ned",
-  //     lastName: "Flanders",
-  //     office: "President"
-  //   }
-  // ];
 
   import Coordinates from "$lib/ui/Coordinates.svelte";
   import type { Placemark } from "$lib/types/placemark-types";

@@ -65,10 +65,6 @@
         avgRatingByCategory.datasets[0].values[5] = totRatingByCategory.datasets[0].values[5] / countByCategory.datasets[0].values[5];
       }
     });
-
-    // avgRatingByCategory =  {totRatingByCategory.datasets[0].values[4]}/{countByCategory.datasets[0].values[0]}
-
-
   });
 </script>
 
@@ -84,4 +80,3 @@
     </Card>
   </div>
 </div>
-

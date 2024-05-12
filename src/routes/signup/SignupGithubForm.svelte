@@ -1,9 +1,6 @@
 
 
 <script lang="ts">
-    import { goto } from "$app/navigation";
-    import { placemarkService } from "$lib/services/placemark-service";
-    import { currentSession } from "$lib/stores";
 import { signIn, signOut } from "@auth/sveltekit/client"
 import { page } from "$app/stores"
 console.log($page.data.session) 
