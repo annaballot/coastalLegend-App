@@ -31,41 +31,48 @@
   let rating = 8;
   let img = "";
   let selectedCategory = "";
-  let message = "Please donate";
+  let message = "";
 
   async function createPlacemark() {
-    console.log(`Just added: ${name} with category ${category} and description ${description} `);
-    console.log(`latitude: ${latitude}, longitude: ${longitude}`);
+    let formInputError = false;
 
-    if (name) {
-      // const candidate = candidateList.find((candidate) => candidate._id === selectedCandidate);
-      // if (candidate) {
-        const placemark: Placemark = {
-          name: name,
-          category: selectedCategory,
-          description: description,
-          latitude: latitude,
-          longitude: longitude,
-          rating: rating,
-          img: img,
-        };
-        const createdPlacemark = await placemarkService.createPlacemark(placemark, get(currentSession));
-        console.log("new placemark", placemark);
-        console.log("createdPlacemark", createdPlacemark)
-        latestPlacemark.set(placemark);
-        return placemark;
-        if (!createdPlacemark) {
-          message = "Creation not completed - some error occurred";
-          console.log("not successful");
-          return;
-        }
-        // placemark.userid = $currentSession.id;
-        // latestDonation.set(donation);
-        // message = `Thanks! You donated ${amount} to ${candidate.firstName} ${candidate.lastName}`;
-      // }
-    } else {
-      message = "Please select amount, method and candidate";
+    // Check latitude
+    if (latitude < -90 || latitude > 90) {
+      message = "ERROR: Latitude  should be in the range -90 to 90 degrees.";
+      formInputError = true;
     }
+
+    // Check longitude
+    if (longitude < -180 || longitude > 180) {
+      message = "ERROR: Longitude should be in the range -180 to 180 degrees.";
+      formInputError = true;
+    }
+
+    // Check rating
+    if (rating < 1 || rating > 10) {
+      message = "ERROR: Rating should be between 1 - 10";
+      formInputError = true;
+    }
+
+    console.log("message", message);
+
+    if (name && !formInputError) {
+      const placemark: Placemark = {
+        name: name,
+        category: selectedCategory,
+        description: description,
+        latitude: latitude,
+        longitude: longitude,
+        rating: rating,
+        img: img
+      };
+      const createdPlacemark = await placemarkService.createPlacemark(placemark, get(currentSession));
+      console.log(`Just added: ${name} with category ${category} and description ${description} `);
+      console.log(`latitude: ${latitude}, longitude: ${longitude}`);
+      console.log("createdPlacemark", createdPlacemark);
+      latestPlacemark.set(placemark);
+      return placemark;
+    } 
   }
 </script>
 
@@ -75,14 +82,14 @@
     <input bind:value={name} class="input" id="name" name="name" type="string" />
   </div>
   <div class="field">
-      <label class="label" for="category">Select Category:</label>
-      <div class="select">
-        <select bind:value={selectedCategory}>
-          {#each category as cat}
-            <option value={cat}>{cat}</option>
-          {/each}
-        </select>
-      </div>
+    <label class="label" for="category">Select Category:</label>
+    <div class="select">
+      <select bind:value={selectedCategory}>
+        {#each category as cat}
+          <option value={cat}>{cat}</option>
+        {/each}
+      </select>
+    </div>
   </div>
   <div class="field">
     <label class="label" for="description">Provide a Description for your placemark:</label>
@@ -92,6 +99,9 @@
   <div class="field">
     <label class="label" for="rating">Give this Placemark a Rating:</label>
     <input bind:value={rating} class="input" id="rating" name="rating" type="integer" />
+  </div>
+  <div class="field has-text-centered has-text-{"danger"} is-outlined p-2">
+    {message}
   </div>
   <div class="field">
     <div class="control">

@@ -55,10 +55,16 @@
     <br />
 
     <UploadWidget placemarkId={placemark._id} on:imageUploaded={(event) => handleImageUploaded(event, placemark._id)} />
-      <button title="Delete Image" class="card-footer-item" on:click={() => handleImageDelete(placemark._id)}>
-        <span class="icon has-text-danger">
+      <button title="Delete Image" class="button is-danger is-fullwidth" on:click={() => handleImageDelete(placemark._id)}>
+        Delete Image <br>
+        <span class="icon"> 
             <i class="fas fa-trash"></i>
         </span>
     </button>
+
   </Card>
 {/each}
+
+
+
+

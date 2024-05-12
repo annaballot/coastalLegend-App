@@ -16,7 +16,7 @@
   onMount(async () => {
     const placemarks = await placemarkService.getPlacemarks(get(currentSession));
     placemarks.forEach((placemark: Placemark) => {
-        const popup = `${placemark.name} Category: ${placemark.category} Rating: ${placemark.rating}`;
+      const popup = `<b>${placemark.name} </b><br>Category: ${placemark.category} <br>Rating: ${placemark.rating}`;
         map.addMarker(placemark.latitude, placemark.longitude, popup, placemark.category);
     });
     const lastPlacemark = placemarks[placemarks.length - 1];

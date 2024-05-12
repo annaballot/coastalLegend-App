@@ -15,17 +15,12 @@
   let placemarks: Placemark[] = [];
 
   onMount(async () => {
-    // candidateList = await placemarkService.getCandidates(get(currentSession));
     placemarks = await placemarkService.getPlacemarks(get(currentSession));
-    // candidates = await placemarkService.getCandidates(get(currentSession));
-    // placemarksByCandidate = generateByCandidate(placemarks, candidates);
 
     placemarks.forEach((placemark: Placemark) => {
-      // if (typeof placemark.candidate !== "string") {
-        // const popup = `${placemark.name} Category: ${placemark.category} Rating: ${placemark.rating}`;
-        const popup = `Category`;
+      const popup = `<b>${placemark.name} </b><br>Category: ${placemark.category} <br>Rating: ${placemark.rating}`;
         map.addMarker(placemark.latitude, placemark.longitude, popup, placemark.category);
-      // }
+
     });
     const lastPlacemark = placemarks[placemarks.length - 1];
     if (lastPlacemark) map.moveTo(lastPlacemark.latitude, lastPlacemark.longitude);
@@ -38,7 +33,7 @@
       placemarks.forEach((placemark: Placemark) => {
         console.log("Adding markers to map");
         console.log(placemark.name, placemark.latitude, placemark.longitude);
-            const popup = `Test`;
+        const popup = `<b>${placemark.name} </b><br>Category: ${placemark.category} <br>Rating: ${placemark.rating}`;
             map.addMarker(placemark.latitude, placemark.longitude, popup, placemark.category);
         });
         console.log("latestPlacemark")
